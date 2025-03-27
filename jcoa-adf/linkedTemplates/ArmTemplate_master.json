@@ -7,6 +7,18 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "jcoa-adf"
 		},
+		"AzureDataLakeStorage_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage'"
+		},
+		"AzureDataLakeStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://jcoast.dfs.core.windows.net/"
+		},
+		"StorageEventTrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/e2f02d95-fd68-450b-8494-b1bed38c1aec/resourceGroups/jcoa-rg/providers/Microsoft.Storage/storageAccounts/jcoast"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -33,6 +45,15 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"AzureDataLakeStorage_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage_accountKey')]"
+					},
+					"AzureDataLakeStorage_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage_properties_typeProperties_url')]"
+					},
+					"StorageEventTrigger_properties_typeProperties_scope": {
+						"value": "[parameters('StorageEventTrigger_properties_typeProperties_scope')]"
 					}
 				}
 			},

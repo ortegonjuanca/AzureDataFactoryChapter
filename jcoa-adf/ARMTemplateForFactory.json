@@ -6,6 +6,18 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "jcoa-adf"
+		},
+		"AzureDataLakeStorage_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage'"
+		},
+		"AzureDataLakeStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://jcoast.dfs.core.windows.net/"
+		},
+		"StorageEventTrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/e2f02d95-fd68-450b-8494-b1bed38c1aec/resourceGroups/jcoa-rg/providers/Microsoft.Storage/storageAccounts/jcoast"
 		}
 	},
 	"variables": {
@@ -47,6 +59,53 @@
 				"annotations": []
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/StorageEventTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pipeline1",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/bronze/blobs/",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('StorageEventTrigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipeline1')]"
+			]
 		}
 	]
 }

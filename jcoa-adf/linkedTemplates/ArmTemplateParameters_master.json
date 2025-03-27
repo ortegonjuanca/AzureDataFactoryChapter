@@ -5,6 +5,15 @@
 		"factoryName": {
 			"value": "jcoa-adf"
 		},
+		"AzureDataLakeStorage_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage_properties_typeProperties_url": {
+			"value": "https://jcoast.dfs.core.windows.net/"
+		},
+		"StorageEventTrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/e2f02d95-fd68-450b-8494-b1bed38c1aec/resourceGroups/jcoa-rg/providers/Microsoft.Storage/storageAccounts/jcoast"
+		},
 		"containerUri": {
 			"value": ""
 		},
