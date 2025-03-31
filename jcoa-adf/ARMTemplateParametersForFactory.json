@@ -11,10 +11,10 @@
 		"AzureDataLakeStorage_properties_typeProperties_url": {
 			"value": "https://jcoast.dfs.core.windows.net/"
 		},
-		"StorageEventTrigger_properties_pipeline1_parameters_triggeringFile": {
+		"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFile": {
 			"value": "@triggerBody().fileName"
 		},
-		"StorageEventTrigger_properties_pipeline1_parameters_triggeringFolder": {
+		"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFolder": {
 			"value": "@triggerBody().folderPath"
 		},
 		"StorageEventTrigger_properties_typeProperties_scope": {

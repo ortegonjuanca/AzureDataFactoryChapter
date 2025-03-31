@@ -15,11 +15,11 @@
 			"type": "string",
 			"defaultValue": "https://jcoast.dfs.core.windows.net/"
 		},
-		"StorageEventTrigger_properties_pipeline1_parameters_triggeringFile": {
+		"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFile": {
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
 		},
-		"StorageEventTrigger_properties_pipeline1_parameters_triggeringFolder": {
+		"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFolder": {
 			"type": "string",
 			"defaultValue": "@triggerBody().folderPath"
 		},
@@ -60,11 +60,11 @@
 					"AzureDataLakeStorage_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_properties_typeProperties_url')]"
 					},
-					"StorageEventTrigger_properties_pipeline1_parameters_triggeringFile": {
-						"value": "[parameters('StorageEventTrigger_properties_pipeline1_parameters_triggeringFile')]"
+					"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFile": {
+						"value": "[parameters('StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFile')]"
 					},
-					"StorageEventTrigger_properties_pipeline1_parameters_triggeringFolder": {
-						"value": "[parameters('StorageEventTrigger_properties_pipeline1_parameters_triggeringFolder')]"
+					"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFolder": {
+						"value": "[parameters('StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFolder')]"
 					},
 					"StorageEventTrigger_properties_typeProperties_scope": {
 						"value": "[parameters('StorageEventTrigger_properties_typeProperties_scope')]"

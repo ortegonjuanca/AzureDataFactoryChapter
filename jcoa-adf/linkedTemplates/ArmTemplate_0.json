@@ -15,11 +15,11 @@
 			"type": "string",
 			"defaultValue": "https://jcoast.dfs.core.windows.net/"
 		},
-		"StorageEventTrigger_properties_pipeline1_parameters_triggeringFile": {
+		"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFile": {
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
 		},
-		"StorageEventTrigger_properties_pipeline1_parameters_triggeringFolder": {
+		"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFolder": {
 			"type": "string",
 			"defaultValue": "@triggerBody().folderPath"
 		},
@@ -89,7 +89,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"name": "[concat(parameters('factoryName'), '/DataFlowFullName')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -101,7 +101,7 @@
 								"referenceName": "Parquet",
 								"type": "DatasetReference"
 							},
-							"name": "source1"
+							"name": "Source"
 						}
 					],
 					"sinks": [
@@ -110,28 +110,28 @@
 								"referenceName": "Parquet",
 								"type": "DatasetReference"
 							},
-							"name": "sink1"
+							"name": "Sink"
 						}
 					],
 					"transformations": [
 						{
-							"name": "derivedColumn1"
+							"name": "fullNameColumn"
 						}
 					],
 					"scriptLines": [
 						"source(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false,",
-						"     format: 'parquet') ~> source1",
-						"source1 derive(full_name = toString(byName(\"name\")) + \" \" + toString(byName(\"first_surname\")) + toString(byName(\"second_surname\"))) ~> derivedColumn1",
-						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     format: 'parquet') ~> Source",
+						"Source derive(full_name = toString(byName(\"name\")) + \" \" + toString(byName(\"first_surname\")) + \" \" + toString(byName(\"second_surname\"))) ~> fullNameColumn",
+						"fullNameColumn sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     format: 'parquet',",
 						"     umask: 0022,",
 						"     preCommands: [],",
 						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
+						"     skipDuplicateMapOutputs: true) ~> Sink"
 					]
 				}
 			},
@@ -140,39 +140,15 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"name": "[concat(parameters('factoryName'), '/PipelineFullName')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Set variable",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "fileName",
-							"value": {
-								"value": "@pipeline().parameters.triggeringFile",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Data flow1",
+						"name": "Data flow",
 						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Set variable",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -183,11 +159,11 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "dataflow1",
+								"referenceName": "DataFlowFullName",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"source1": {
+									"Source": {
 										"containerName": {
 											"value": "@pipeline().parameters.triggeringFolder",
 											"type": "Expression"
@@ -197,16 +173,12 @@
 											"type": "Expression"
 										}
 									},
-									"sink1": {
+									"Sink": {
 										"containerName": "silver",
 										"fileName": "personal_data_full_name.parquet"
 									}
 								},
-								"linkedServiceParameters": {
-									"sink1": {
-										"schemaLinkedService": {}
-									}
-								}
+								"linkedServiceParameters": {}
 							},
 							"staging": {},
 							"compute": {
@@ -236,7 +208,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+				"[concat(variables('factoryId'), '/dataflows/DataFlowFullName')]"
 			]
 		},
 		{
@@ -249,12 +221,12 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "pipeline1",
+							"referenceName": "PipelineFullName",
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"triggeringFile": "[parameters('StorageEventTrigger_properties_pipeline1_parameters_triggeringFile')]",
-							"triggeringFolder": "[parameters('StorageEventTrigger_properties_pipeline1_parameters_triggeringFolder')]"
+							"triggeringFile": "[parameters('StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFile')]",
+							"triggeringFolder": "[parameters('StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFolder')]"
 						}
 					}
 				],
@@ -269,7 +241,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pipeline1')]"
+				"[concat(variables('factoryId'), '/pipelines/PipelineFullName')]"
 			]
 		}
 	]
