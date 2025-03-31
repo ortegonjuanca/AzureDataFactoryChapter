@@ -41,7 +41,14 @@
 					{
 						"name": "Data flow",
 						"type": "ExecuteDataFlow",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Set Output FileName",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -54,7 +61,12 @@
 							"dataflow": {
 								"referenceName": "DataFlowFullName",
 								"type": "DataFlowReference",
-								"parameters": {},
+								"parameters": {
+									"outputFileName": {
+										"value": "'@{variables('outputFileName')}'",
+										"type": "Expression"
+									}
+								},
 								"datasetParameters": {
 									"Source": {
 										"containerName": {
@@ -80,6 +92,20 @@
 							},
 							"traceLevel": "Fine"
 						}
+					},
+					{
+						"name": "Set Output FileName",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "outputFileName",
+							"value": "personal_data_full_name.parquet"
+						}
 					}
 				],
 				"policy": {
@@ -95,6 +121,9 @@
 				},
 				"variables": {
 					"fileName": {
+						"type": "String"
+					},
+					"outputFileName": {
 						"type": "String"
 					}
 				},
@@ -185,6 +214,9 @@
 						}
 					],
 					"scriptLines": [
+						"parameters{",
+						"     outputFileName as string",
+						"}",
 						"source(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false,",
@@ -193,11 +225,13 @@
 						"fullNameColumn sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     format: 'parquet',",
+						"     partitionFileNames:[($outputFileName)],",
 						"     umask: 0022,",
 						"     preCommands: [],",
 						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> Sink"
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> Sink"
 					]
 				}
 			},
