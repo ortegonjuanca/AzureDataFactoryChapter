@@ -19,6 +19,10 @@
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
 		},
+		"StorageEventTrigger_properties_pipeline1_parameters_triggeringFolder": {
+			"type": "string",
+			"defaultValue": "@triggerBody(). folderPath"
+		},
 		"StorageEventTrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/e2f02d95-fd68-450b-8494-b1bed38c1aec/resourceGroups/jcoa-rg/providers/Microsoft.Storage/storageAccounts/jcoast"
@@ -96,6 +100,9 @@
 				},
 				"parameters": {
 					"triggeringFile": {
+						"type": "string"
+					},
+					"triggeringFolder": {
 						"type": "string"
 					}
 				},
@@ -180,7 +187,8 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"triggeringFile": "[parameters('StorageEventTrigger_properties_pipeline1_parameters_triggeringFile')]"
+							"triggeringFile": "[parameters('StorageEventTrigger_properties_pipeline1_parameters_triggeringFile')]",
+							"triggeringFolder": "[parameters('StorageEventTrigger_properties_pipeline1_parameters_triggeringFolder')]"
 						}
 					}
 				],
