@@ -5,7 +5,14 @@
 			{
 				"name": "Data flow",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set Output FileName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -18,6 +25,12 @@
 					"dataflow": {
 						"referenceName": "DataFlowFullName",
 						"type": "DataFlowReference",
+						"parameters": {
+							"outputFileName": {
+								"value": "'@{variables('outputFileName')}'",
+								"type": "Expression"
+							}
+						},
 						"datasetParameters": {
 							"Source": {
 								"containerName": {
@@ -41,6 +54,20 @@
 					},
 					"traceLevel": "Fine"
 				}
+			},
+			{
+				"name": "Set Output FileName",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "outputFileName",
+					"value": "personal_data_full_name.parquet"
+				}
 			}
 		],
 		"parameters": {
@@ -53,6 +80,9 @@
 		},
 		"variables": {
 			"fileName": {
+				"type": "String"
+			},
+			"outputFileName": {
 				"type": "String"
 			}
 		},
