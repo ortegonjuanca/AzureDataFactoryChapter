@@ -21,7 +21,7 @@
 		},
 		"StorageEventTrigger_properties_pipeline1_parameters_triggeringFolder": {
 			"type": "string",
-			"defaultValue": "@triggerBody(). folderPath"
+			"defaultValue": "@triggerBody().folderPath"
 		},
 		"StorageEventTrigger_properties_typeProperties_scope": {
 			"type": "string",
