@@ -60,7 +60,7 @@
 				},
 				"parameters": {
 					"containerName": {
-						"type": "string"
+						"type": "String"
 					},
 					"fileName": {
 						"type": "string"
@@ -123,7 +123,7 @@
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false,",
 						"     format: 'parquet') ~> source1",
-						"source1 derive(full_name = concat(\"hello\", \" \", \"bye\")) ~> derivedColumn1",
+						"source1 derive(full_name = toString(byName(\"name\")) + \" \" + toString(byName(\"first_surname\")) + toString(byName(\"second_surname\"))) ~> derivedColumn1",
 						"derivedColumn1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     format: 'parquet',",
@@ -165,8 +165,6 @@
 					{
 						"name": "Data flow1",
 						"type": "ExecuteDataFlow",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Set variable",
@@ -189,8 +187,25 @@
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"source1": {},
-									"sink1": {}
+									"source1": {
+										"containerName": {
+											"value": "@pipeline().parameters.triggeringFolder",
+											"type": "Expression"
+										},
+										"fileName": {
+											"value": "@pipeline().parameters.triggeringFile",
+											"type": "Expression"
+										}
+									},
+									"sink1": {
+										"containerName": "silver",
+										"fileName": "personal_data_full_name.parquet"
+									}
+								},
+								"linkedServiceParameters": {
+									"sink1": {
+										"schemaLinkedService": {}
+									}
 								}
 							},
 							"staging": {},
