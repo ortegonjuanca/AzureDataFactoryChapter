@@ -53,9 +53,9 @@
 				}
 			}
 		],
-		"variables": {
-			"VariabelTest": {
-				"type": "String"
+		"parameters": {
+			"triggeringFile": {
+				"type": "string"
 			}
 		},
 		"annotations": []
