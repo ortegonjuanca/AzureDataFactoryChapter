@@ -17,7 +17,7 @@
 		},
 		"StorageEventTrigger_properties_pipeline1_parameters_triggeringFile": {
 			"type": "string",
-			"defaultValue": "@trigger().outputs.body.fileName"
+			"defaultValue": "@triggerBody().fileName"
 		},
 		"StorageEventTrigger_properties_typeProperties_scope": {
 			"type": "string",

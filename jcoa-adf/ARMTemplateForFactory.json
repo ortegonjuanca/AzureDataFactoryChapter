@@ -17,7 +17,7 @@
 		},
 		"StorageEventTrigger_properties_pipeline1_parameters_triggeringFile": {
 			"type": "string",
-			"defaultValue": "@trigger().outputs.body.fileName"
+			"defaultValue": "@triggerBody().fileName"
 		},
 		"StorageEventTrigger_properties_typeProperties_scope": {
 			"type": "string",
@@ -44,9 +44,9 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"variableName": "VariabelTest",
+							"variableName": "fileName",
 							"value": {
-								"value": "@trigger().outputs.body.fileName",
+								"value": "@pipeline().parameters.triggeringFile",
 								"type": "Expression"
 							}
 						}
@@ -97,6 +97,11 @@
 				"parameters": {
 					"triggeringFile": {
 						"type": "string"
+					}
+				},
+				"variables": {
+					"fileName": {
+						"type": "String"
 					}
 				},
 				"annotations": []
