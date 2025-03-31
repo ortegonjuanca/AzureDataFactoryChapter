@@ -3,33 +3,9 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Set variable",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "fileName",
-					"value": {
-						"value": "@pipeline().parameters.triggeringFile",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Data flow1",
+				"name": "Data flow",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "Set variable",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -43,7 +19,7 @@
 						"referenceName": "dataflow1",
 						"type": "DataFlowReference",
 						"datasetParameters": {
-							"source1": {
+							"Source": {
 								"containerName": {
 									"value": "@pipeline().parameters.triggeringFolder",
 									"type": "Expression"
@@ -53,7 +29,7 @@
 									"type": "Expression"
 								}
 							},
-							"sink1": {
+							"Sink": {
 								"containerName": "silver",
 								"fileName": "personal_data_full_name.parquet"
 							}

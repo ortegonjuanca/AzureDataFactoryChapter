@@ -9,7 +9,7 @@
 						"referenceName": "Parquet",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "Source"
 				}
 			],
 			"sinks": [
@@ -18,28 +18,28 @@
 						"referenceName": "Parquet",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "Sink"
 				}
 			],
 			"transformations": [
 				{
-					"name": "derivedColumn1"
+					"name": "fullNameColumn"
 				}
 			],
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     format: 'parquet') ~> source1",
-				"source1 derive(full_name = toString(byName(\"name\")) + \" \" + toString(byName(\"first_surname\")) + toString(byName(\"second_surname\"))) ~> derivedColumn1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     format: 'parquet') ~> Source",
+				"Source derive(full_name = toString(byName(\"name\")) + \" \" + toString(byName(\"first_surname\")) + \" \" + toString(byName(\"second_surname\"))) ~> fullNameColumn",
+				"fullNameColumn sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> Sink"
 			]
 		}
 	}
