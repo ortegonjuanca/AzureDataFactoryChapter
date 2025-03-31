@@ -11,7 +11,7 @@
 				},
 				"parameters": {
 					"triggeringFile": "@triggerBody().fileName",
-					"triggeringFolder": "@triggerBody(). folderPath"
+					"triggeringFolder": "@triggerBody().folderPath"
 				}
 			}
 		],
