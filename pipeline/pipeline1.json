@@ -22,8 +22,6 @@
 			{
 				"name": "Data flow1",
 				"type": "ExecuteDataFlow",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Set variable",
@@ -43,7 +41,23 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "dataflow1",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"containerName": {
+									"value": "@pipeline().parameters.triggeringFolder",
+									"type": "Expression"
+								},
+								"fileName": {
+									"value": "@pipeline().parameters.triggeringFile",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"containerName": "silver",
+								"fileName": "personal_data_full_name.parquet"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,

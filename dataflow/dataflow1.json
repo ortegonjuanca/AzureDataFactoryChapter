@@ -5,6 +5,10 @@
 		"typeProperties": {
 			"sources": [
 				{
+					"dataset": {
+						"referenceName": "Parquet",
+						"type": "DatasetReference"
+					},
 					"name": "source1"
 				}
 			],
@@ -24,8 +28,10 @@
 			],
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source1",
-				"source1 derive(full_name = concat(\"hello\", \" \", \"bye\")) ~> derivedColumn1",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> source1",
+				"source1 derive(full_name = toString(byName(\"name\")) + \" \" + toString(byName(\"first_surname\")) + toString(byName(\"second_surname\"))) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
