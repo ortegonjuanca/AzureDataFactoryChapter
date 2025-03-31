@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Set variable1",
+				"name": "Set variable",
 				"type": "SetVariable",
 				"dependsOn": [],
 				"policy": {
@@ -14,7 +14,7 @@
 				"typeProperties": {
 					"variableName": "VariabelTest",
 					"value": {
-						"value": "@pipeline().DataFactory",
+						"value": "@trigger().outputs.body.fileName",
 						"type": "Expression"
 					}
 				}
@@ -22,9 +22,11 @@
 			{
 				"name": "Data flow1",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
-						"activity": "Set variable1",
+						"activity": "Set variable",
 						"dependencyConditions": [
 							"Succeeded"
 						]
