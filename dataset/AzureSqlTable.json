@@ -1,18 +1,17 @@
 {
-	"name": "OnPremiseSqlServerTable",
+	"name": "AzureSqlTable",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "OnPremiseSqlServer",
+			"referenceName": "AzureSqlDatabase",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
 			"tableName": {
-				"type": "string",
-				"defaultValue": "defaultValue"
+				"type": "string"
 			}
 		},
 		"annotations": [],
-		"type": "SqlServerTable",
+		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
