@@ -11,6 +11,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage'"
 		},
+		"AzureSqlDatabase_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AzureSqlDatabase'"
+		},
+		"OnPremiseSqlServer_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'OnPremiseSqlServer'"
+		},
 		"AzureDataLakeStorage_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://jcoast.dfs.core.windows.net/"
@@ -26,6 +34,30 @@
 		"StorageEventTrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/e2f02d95-fd68-450b-8494-b1bed38c1aec/resourceGroups/jcoa-rg/providers/Microsoft.Storage/storageAccounts/jcoast"
+		},
+		"AzureSqlDatabase_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "jcoa-sql.database.windows.net"
+		},
+		"AzureSqlDatabase_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "jcoa-school-sqldb"
+		},
+		"AzureSqlDatabase_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "adminuser"
+		},
+		"OnPremiseSqlServer_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "jcoavm.northeurope.cloudapp.azure.com"
+		},
+		"OnPremiseSqlServer_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SchoolDB"
+		},
+		"OnPremiseSqlServer_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "jcoa-vm"
 		},
 		"containerUri": {
 			"type": "string",
@@ -57,8 +89,32 @@
 					"AzureDataLakeStorage_accountKey": {
 						"value": "[parameters('AzureDataLakeStorage_accountKey')]"
 					},
+					"AzureSqlDatabase_password": {
+						"value": "[parameters('AzureSqlDatabase_password')]"
+					},
+					"OnPremiseSqlServer_password": {
+						"value": "[parameters('OnPremiseSqlServer_password')]"
+					},
 					"AzureDataLakeStorage_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_properties_typeProperties_url')]"
+					},
+					"AzureSqlDatabase_properties_typeProperties_server": {
+						"value": "[parameters('AzureSqlDatabase_properties_typeProperties_server')]"
+					},
+					"AzureSqlDatabase_properties_typeProperties_database": {
+						"value": "[parameters('AzureSqlDatabase_properties_typeProperties_database')]"
+					},
+					"AzureSqlDatabase_properties_typeProperties_userName": {
+						"value": "[parameters('AzureSqlDatabase_properties_typeProperties_userName')]"
+					},
+					"OnPremiseSqlServer_properties_typeProperties_server": {
+						"value": "[parameters('OnPremiseSqlServer_properties_typeProperties_server')]"
+					},
+					"OnPremiseSqlServer_properties_typeProperties_database": {
+						"value": "[parameters('OnPremiseSqlServer_properties_typeProperties_database')]"
+					},
+					"OnPremiseSqlServer_properties_typeProperties_userName": {
+						"value": "[parameters('OnPremiseSqlServer_properties_typeProperties_userName')]"
 					},
 					"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFile": {
 						"value": "[parameters('StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFile')]"

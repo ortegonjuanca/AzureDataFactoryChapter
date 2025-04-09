@@ -8,6 +8,12 @@
 		"AzureDataLakeStorage_accountKey": {
 			"value": ""
 		},
+		"AzureSqlDatabase_password": {
+			"value": ""
+		},
+		"OnPremiseSqlServer_password": {
+			"value": ""
+		},
 		"AzureDataLakeStorage_properties_typeProperties_url": {
 			"value": "https://jcoast.dfs.core.windows.net/"
 		},
@@ -19,6 +25,24 @@
 		},
 		"StorageEventTrigger_properties_typeProperties_scope": {
 			"value": "/subscriptions/e2f02d95-fd68-450b-8494-b1bed38c1aec/resourceGroups/jcoa-rg/providers/Microsoft.Storage/storageAccounts/jcoast"
+		},
+		"AzureSqlDatabase_properties_typeProperties_server": {
+			"value": "jcoa-sql.database.windows.net"
+		},
+		"AzureSqlDatabase_properties_typeProperties_database": {
+			"value": "jcoa-school-sqldb"
+		},
+		"AzureSqlDatabase_properties_typeProperties_userName": {
+			"value": "adminuser"
+		},
+		"OnPremiseSqlServer_properties_typeProperties_server": {
+			"value": "jcoavm.northeurope.cloudapp.azure.com"
+		},
+		"OnPremiseSqlServer_properties_typeProperties_database": {
+			"value": "SchoolDB"
+		},
+		"OnPremiseSqlServer_properties_typeProperties_userName": {
+			"value": "jcoa-vm"
 		}
 	}
 }
