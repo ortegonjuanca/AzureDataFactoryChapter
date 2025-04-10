@@ -1,0 +1,68 @@
+{
+	"name": "BasicPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "If Condition",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greaterOrEquals(pipeline().parameters.number, 0)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Set variable Less than 0",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "numberResult",
+								"value": {
+									"value": "The number '@{pipeline().parameters.number}' is < 0",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Set variable Greater or Equal than 0",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "numberResult",
+								"value": {
+									"value": "The number '@{pipeline().parameters.number}' is >= 0",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"number": {
+				"type": "int"
+			}
+		},
+		"variables": {
+			"numberResult": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
