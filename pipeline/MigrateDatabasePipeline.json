@@ -76,15 +76,24 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
+									"preCopyScript": {
+										"value": "SET IDENTITY_INSERT [dbo].[@item().TABLE_NAME] ON;",
+										"type": "Expression"
+									},
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",
 									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
+								"validateDataConsistency": false,
 								"translator": {
-									"value": "@item().TABLE_NAME",
-									"type": "Expression"
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": false,
+										"treatBooleanAsNumber": false
+									}
 								}
 							},
 							"inputs": [
