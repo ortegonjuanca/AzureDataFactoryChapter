@@ -17,15 +17,6 @@
 		"AzureDataLakeStorage_properties_typeProperties_url": {
 			"value": "https://jcoast.dfs.core.windows.net/"
 		},
-		"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFile": {
-			"value": "@triggerBody().fileName"
-		},
-		"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFolder": {
-			"value": "@triggerBody().folderPath"
-		},
-		"StorageEventTrigger_properties_typeProperties_scope": {
-			"value": "/subscriptions/e2f02d95-fd68-450b-8494-b1bed38c1aec/resourceGroups/jcoa-rg/providers/Microsoft.Storage/storageAccounts/jcoast"
-		},
 		"AzureSqlDatabase_properties_typeProperties_server": {
 			"value": "jcoa-sql.database.windows.net"
 		},
@@ -43,6 +34,15 @@
 		},
 		"OnPremiseSqlServer_properties_typeProperties_userName": {
 			"value": "jcoa-vm"
+		},
+		"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFile": {
+			"value": "@triggerBody().fileName"
+		},
+		"StorageEventTrigger_properties_PipelineFullName_parameters_triggeringFolder": {
+			"value": "@triggerBody().folderPath"
+		},
+		"StorageEventTrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/e2f02d95-fd68-450b-8494-b1bed38c1aec/resourceGroups/jcoa-rg/providers/Microsoft.Storage/storageAccounts/jcoast"
 		}
 	}
 }
