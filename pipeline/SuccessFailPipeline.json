@@ -1,0 +1,89 @@
+{
+	"name": "SuccessFailPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set Division Result",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "divisionResult",
+					"value": {
+						"value": "@div(pipeline().parameters.dividendNumber, pipeline().parameters.dividingNumber)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get One Piece characters",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Set Division Result",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "https://api.api-onepiece.com/v2/characters/en"
+				}
+			},
+			{
+				"name": "Set characters",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get One Piece characters",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "characters",
+					"value": {
+						"value": "@activity('Get One Piece characters').output",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"dividendNumber": {
+				"type": "int"
+			},
+			"dividingNumber": {
+				"type": "int"
+			}
+		},
+		"variables": {
+			"divisionResult": {
+				"type": "Integer"
+			},
+			"characters": {
+				"type": "Array"
+			}
+		},
+		"annotations": []
+	}
+}
