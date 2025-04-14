@@ -44,7 +44,7 @@
 				}
 			},
 			{
-				"name": "Set characters",
+				"name": "Set One Piece characters",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -60,9 +60,57 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "characters",
+					"variableName": "onePieceCharacters",
 					"value": {
-						"value": "@activity('Get One Piece characters').output",
+						"value": "@activity('Get One Piece characters').output.response",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get Malaga weather",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Set Division Result",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "https://api.open-meteo.com/v1/forecast?latitude=36.72016&longitude=-4.42034&current=temperature_2m,relative_humidity_2m,rain,weather_code"
+				}
+			},
+			{
+				"name": "Set Malaga weather",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Malaga weather",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "malagaWeather",
+					"value": {
+						"value": "@string(activity('Get Malaga weather').output)",
 						"type": "Expression"
 					}
 				}
@@ -80,8 +128,11 @@
 			"divisionResult": {
 				"type": "Integer"
 			},
-			"characters": {
-				"type": "Array"
+			"onePieceCharacters": {
+				"type": "String"
+			},
+			"malagaWeather": {
+				"type": "String"
 			}
 		},
 		"annotations": []
