@@ -65,6 +65,80 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/BasicPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "If Condition",
+						"type": "IfCondition",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greaterOrEquals(pipeline().parameters.number, 0)",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Set variable Less than 0",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "numberResult",
+										"value": {
+											"value": "The number '@{pipeline().parameters.number}' is < 0",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "Set variable Greater or Equal than 0",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "numberResult",
+										"value": {
+											"value": "The number '@{pipeline().parameters.number}' is >= 0",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"number": {
+						"type": "int"
+					}
+				},
+				"variables": {
+					"numberResult": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/MigrateDatabasePipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -151,11 +225,12 @@
 											"disableMetricsCollection": false
 										},
 										"enableStaging": false,
+										"validateDataConsistency": false,
 										"translator": {
 											"type": "TabularTranslator",
 											"typeConversion": true,
 											"typeConversionSettings": {
-												"allowDataTruncation": true,
+												"allowDataTruncation": false,
 												"treatBooleanAsNumber": false
 											}
 										}
@@ -195,6 +270,9 @@
 				"variables": {
 					"tableNames": {
 						"type": "Array"
+					},
+					"malagaWeather": {
+						"type": "String"
 					}
 				},
 				"annotations": []
@@ -305,6 +383,154 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/DataFlowFullName')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SuccessFailPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set Division Result",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "divisionResult",
+							"value": {
+								"value": "@div(pipeline().parameters.dividendNumber, pipeline().parameters.dividingNumber)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get One Piece characters",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Set Division Result",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "GET",
+							"headers": {},
+							"url": "https://api.api-onepiece.com/v2/characters/en"
+						}
+					},
+					{
+						"name": "Set One Piece characters",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Get One Piece characters",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "onePieceCharacters",
+							"value": {
+								"value": "@activity('Get One Piece characters').output.response",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get Malaga weather",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Set Division Result",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "GET",
+							"headers": {},
+							"url": "https://api.open-meteo.com/v1/forecast?latitude=36.72016&longitude=-4.42034&current=temperature_2m,relative_humidity_2m,rain,weather_code"
+						}
+					},
+					{
+						"name": "Set Malaga weather",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Get Malaga weather",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "malagaWeather",
+							"value": {
+								"value": "@string(activity('Get Malaga weather').output)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"dividendNumber": {
+						"type": "int"
+					},
+					"dividingNumber": {
+						"type": "int"
+					}
+				},
+				"variables": {
+					"divisionResult": {
+						"type": "Integer"
+					},
+					"onePieceCharacters": {
+						"type": "String"
+					},
+					"malagaWeather": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureSqlTable')]",
